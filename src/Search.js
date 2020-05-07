@@ -5,22 +5,33 @@ import BooksList from "./BooksList";
 class Search extends Component{
     state = {
         inputSearch: '',
-        books_results: []
+        books_results: [],
+        searchUpdated: false     // used to check if the input is updated or not since last call of componentDidUpdate
     };
     handleSearchChange = (event)=>{
-        this.setState({
-            inputSearch: event.target.value
-        });
+        const searchValue = event.target.value;
+        this.setState(()=>({
+            inputSearch: searchValue,
+            searchUpdated: true
+        }));
     };
-
-    searchForBooks = () => {
-        this.state.inputSearch !== '' && BooksAPI.search(this.state.inputSearch)
-            .then((books) => {
-                this.setState(() => ({
-                    books_results: books
-                }))
-            });
-    };
+    componentDidUpdate() {
+        if(this.state.searchUpdated){
+            // console.log("Updated");
+            this.state.inputSearch !== '' ? BooksAPI.search(this.state.inputSearch)
+                .then((books) => {
+                    // console.log(books)
+                    this.setState(()=>({
+                        books_results: "error" in books ? [] : books,
+                        searchUpdated: false
+                    }));
+                })
+            : this.setState(()=>({
+                    books_results: [],
+                    searchUpdated: false
+                }));
+        }
+    }
     render() {
         return (
             <div className="search-books">
@@ -33,6 +44,7 @@ class Search extends Component{
                         />
                     </div>
                 </div>
+
                 <div className="search-books-results">
                     {this.state.books_results && <BooksList books={this.state.books_results}/>}
                 </div>
