@@ -84,8 +84,3 @@ class BooksApp extends React.Component {
 }
 
 export default BooksApp
-
-/*
-* https://www.w3docs.com/learn-html/html-select-tag.html
-*
-* */

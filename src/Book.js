@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import BookShelfChanger from "./BookShelfChanger";
 import * as BooksAPI from './BooksAPI'
+import PropTypes from 'prop-types';
 
 class Book extends Component {
     changeBookShelf = (newShelf) => {
@@ -37,6 +38,11 @@ class Book extends Component {
         )
     }
 
+}
+
+Book.propTypes = {
+    book: PropTypes.object.isRequired,
+    shelfChange: PropTypes.func.isRequired
 }
 
 export default Book

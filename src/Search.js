@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import * as BooksAPI from "./BooksAPI";
 import BooksList from "./BooksList";
+import PropTypes from 'prop-types'
 
 class Search extends Component {
     state = {
@@ -20,10 +21,8 @@ class Search extends Component {
 
     componentDidUpdate() {
         if (this.state.searchUpdated) {
-            // console.log("Updated");
             this.state.inputSearch !== '' ? BooksAPI.search(this.state.inputSearch)
                     .then((books) => {
-                        console.log(books)
                         this.setState(() => ({
                             books_results: "error" in books ? [] : books,
                             searchUpdated: false
@@ -65,6 +64,10 @@ class Search extends Component {
             </div>
         )
     }
+}
+
+Search.propTypes = {
+    addToShelf: PropTypes.func.isRequired
 }
 
 export default Search
