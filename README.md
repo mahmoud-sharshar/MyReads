@@ -12,10 +12,10 @@ It uses the provided Books API to search for books and add them to a bookshelf.
 
 ## ScreenShots of the app
 ### main Page
-![image](images/mainPage1.png)
-![image](images/mainPage2.png)
+![](/images/mainPage1.PNG)
+![](/images/mainPage2.PNG)
 ### Search Page
-![image](images/searchPage.png)
+![](images/searchPage.PNG)
 ## Main Files: Project Structure
 ```bash
 ├── CONTRIBUTING.md
