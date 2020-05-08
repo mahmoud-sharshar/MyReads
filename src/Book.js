@@ -1,26 +1,42 @@
-import React from 'react'
+import React, {Component} from 'react'
+import BookShelfChanger from "./BookShelfChanger";
+import * as BooksAPI from './BooksAPI'
 
-const Book = props => {
-    return (
-        <li key={props.key}>
-            <div className="book">
-                <div className="book-top">
-                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${props.book.imageLinks.smallThumbnail})`}}> </div>
-                    <div className="book-shelf-changer">
-                        <select>
-                            <option value="move" disabled>Move to...</option>
-                            <option value="currentlyReading">Currently Reading</option>
-                            <option value="wantToRead">Want to Read</option>
-                            <option value="read">Read</option>
-                            <option value="none">None</option>
-                        </select>
+class Book extends Component {
+    changeBookShelf = (newShelf) => {
+        BooksAPI.update(this.props.book, newShelf)
+            .then((res) => {
+                this.props.shelfChange();
+            });
+    };
+
+    render() {
+        return (
+            <li key={this.props.book.id}>
+                <div className="book">
+                    <div className="book-top">
+                        <div className="book-cover"
+                             style={{
+                                 width: 128, height: 193, backgroundImage: `url(
+                                 ${this.props.book.imageLinks && this.props.book.imageLinks.smallThumbnail}
+                                 )`
+                             }
+                             }>
+                        </div>
+                        <div className="book-shelf-changer">
+                            <BookShelfChanger
+                                bookShelf={"shelf" in this.props.book ? this.props.book.shelf : "none"}
+                                changeBookShelf={this.changeBookShelf}
+                            />
+                        </div>
                     </div>
+                    <div className="book-title">{this.props.book.title}</div>
+                    <div className="book-authors">{this.props.book.authors}</div>
                 </div>
-                <div className="book-title">{props.book.title}</div>
-                <div className="book-authors">{props.book.authors}</div>
-            </div>
-        </li>
-    )
-};
+            </li>
+        )
+    }
+
+}
 
 export default Book
