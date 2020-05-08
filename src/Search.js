@@ -23,8 +23,18 @@ class Search extends Component {
         if (this.state.searchUpdated) {
             this.state.inputSearch !== '' ? BooksAPI.search(this.state.inputSearch)
                     .then((books) => {
+                        const search_results = "error" in books ? []
+                            : books.map((book) => {
+                                for (const shelfBook of this.props.shelfBooks) {
+                                    if (shelfBook.id === book.id
+                                        && shelfBook.title === book.title
+                                        && shelfBook.authours === book.authours)
+                                        book.shelf = shelfBook.shelf
+                                }
+                                return book;
+                            });
                         this.setState(() => ({
-                            books_results: "error" in books ? [] : books,
+                            books_results: search_results,
                             searchUpdated: false
                         }));
                     })
@@ -67,7 +77,8 @@ class Search extends Component {
 }
 
 Search.propTypes = {
-    addToShelf: PropTypes.func.isRequired
+    addToShelf: PropTypes.func.isRequired,
+    shelfBooks: PropTypes.array.isRequired
 }
 
 export default Search
